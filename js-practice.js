@@ -999,3 +999,137 @@ console.log(output(transactions));
 //     { category: "food", total: 400 }
 //   ]
 // }
+
+// Group employees by department and calculate the total salary per department.
+const employees1 = [
+  { id: 1, name: "Alice", dept: "IT", salary: 70000 },
+  { id: 2, name: "Bob", dept: "HR", salary: 50000 },
+  { id: 3, name: "Charlie", dept: "IT", salary: 80000 },
+  { id: 4, name: "David", dept: "HR", salary: 55000 },
+];
+
+const groupByDept = (arr) => {
+  return arr.reduce((acc, cur) => {
+    acc[cur.dept] = (acc[cur.dept] || 0) + cur.salary;
+    return acc;
+  }, {});
+};
+console.log(groupByDept(employees1));
+
+// Remove duplicate users based on email. Keep the latest user (higher lastLogin).
+const duplicateUsers = [
+  { email: "a@test.com", lastLogin: 1670000000 },
+  { email: "b@test.com", lastLogin: 1670000100 },
+  { email: "a@test.com", lastLogin: 1670000200 },
+];
+
+const removeDuplicate = (arr) => {
+  const removeEmail = arr.reduce((acc, cur) => {
+    if (!acc[cur.email] || acc[cur.email].lastLogin < cur.lastLogin) {
+      acc[cur.email] = cur;
+    }
+    return acc;
+  }, {});
+  return Object.values(removeEmail);
+};
+console.log(removeDuplicate(duplicateUsers));
+
+// Sort products by: category alphabetically, price descending (within same category)
+const products = [
+  { name: "Pen", category: "Stationery", price: 10 },
+  { name: "Laptop", category: "Electronics", price: 900 },
+  { name: "Laptop", category: "Electronics", price: 1900 },
+  { name: "Phone", category: "Electronics", price: 600 },
+];
+
+const sortProducts = (arr) => {
+  return arr.sort(
+    (a, b) => a.category.localeCompare(b.category) || b.price - a.price
+  );
+};
+console.log(sortProducts(products));
+
+// return an array of customer names who have spent more than $1000 in total.
+const orders = [
+  { customer: "John", amount: 500 },
+  { customer: "Jane", amount: 800 },
+  { customer: "John", amount: 600 },
+];
+
+const totalSpent = (arr) => {
+  const groupByCustomer = arr.reduce((acc, cur) => {
+    acc[cur.customer] = (acc[cur.customer] || 0) + cur.amount;
+    return acc;
+  }, {});
+  console.log(groupByCustomer);
+  return Object.keys(groupByCustomer).filter(
+    (val) => groupByCustomer[val] > 1000
+  );
+};
+console.log(totalSpent(orders));
+
+// Find all users who are missing required fields (name, email, age).
+const Findusers = [
+  { name: "Tom", email: "tom@test.com", age: 30 },
+  { name: "", email: "jane@test.com", age: 25 },
+  { name: "Mike", age: 40 },
+];
+const FindMissingUsers = (arr) => {
+  return arr.filter((val) => {
+    if (!(val.name && val.email && val.age)) {
+      return val;
+    }
+  });
+};
+console.log(FindMissingUsers(Findusers));
+
+// Convert the following array into an object indexed by id, but only include users who are active.
+const activeUsers = [
+  { id: 1, name: "A", active: true },
+  { id: 2, name: "B", active: false },
+  { id: 3, name: "C", active: true },
+];
+
+const findActiveUsers = (arr) => {
+  return arr.reduce((acc, cur) => {
+    if (cur.active) {
+      acc[cur.id] = cur;
+    }
+    return acc;
+  }, {});
+};
+console.log(findActiveUsers(activeUsers));
+// {
+//   '1': { id: 1, name: 'A', active: true },
+//   '3': { id: 3, name: 'C', active: true }
+// }
+
+// Calculate total revenue per user.
+const userData1 = [
+  {
+    id: 1,
+    orders: [
+      { price: 100, qty: 2 },
+      { price: 50, qty: 1 },
+    ],
+  },
+  {
+    id: 2,
+    orders: [{ price: 200, qty: 1 }],
+  },
+];
+
+const calculateRevenue = (arr) => {
+  return arr.map(({ id, orders }) => {
+    const total = orders.reduce((acc, cur) => {
+      return acc + cur.price * cur.qty;
+    }, 0);
+    return {
+      id: id,
+      totalRevenue: total,
+    };
+  });
+};
+console.log(calculateRevenue(userData1));
+
+// output : [ { id: 1, totalRevenue: 250 }, { id: 2, totalRevenue: 200 } ]
