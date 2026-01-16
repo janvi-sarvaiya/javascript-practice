@@ -844,7 +844,6 @@ console.log(userProjects(userData));
 //   uniqueSkills: ["js", "react", "node", "python", "aws", "typescript"]
 // }
 
-
 const teams = [
   {
     teamId: 1,
@@ -919,7 +918,7 @@ function userTask(arr) {
 }
 
 console.log(userTask(teams));
- 
+
 // OUTPUIT :
 // {
 //   tasks: [
@@ -959,5 +958,44 @@ console.log(userTask(teams));
 //     "Node",
 //     "Python",
 //     "Docker"
+//   ]
+// }
+
+const transactions = [
+  { user: "Alice", type: "credit", amount: 200, category: "food" },
+  { user: "Bob", type: "debit", amount: 100, category: "travel" },
+  { user: "Alice", type: "credit", amount: 300, category: "shopping" },
+  { user: "Alice", type: "debit", amount: 150, category: "food" },
+  { user: "Bob", type: "credit", amount: 400, category: "food" },
+  { user: "Alice", type: "credit", amount: 100, category: "food" },
+];
+
+const output = (arr) => {
+  return arr.reduce((acc, cur) => {
+    if (cur.type == "credit") {
+      if (!acc[cur.user]) {
+        acc[cur.user] = [];
+      }
+      const existCategory = acc[cur.user].find(
+        (val) => val.category == cur.category
+      );
+      if (existCategory) {
+        existCategory.total += cur.amount;
+      } else {
+        acc[cur.user].push({ category: cur.category, total: cur.amount });
+      }
+    }
+    return acc;
+  }, {});
+};
+console.log(output(transactions));
+
+// {
+//   Alice: [
+//     { category: "shopping", total: 300 },
+//     { category: "food", total: 300 }
+//   ],
+//   Bob: [
+//     { category: "food", total: 400 }
 //   ]
 // }
